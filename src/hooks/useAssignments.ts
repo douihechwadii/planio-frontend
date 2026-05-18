@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { assignmentService } from '@/services/assignmentService'
 import { AssignmentRequest } from '@/types/assignment'
 import { resourceKeys }      from '@/hooks/useResources'
+import { dashboardKeys } from './useDashboard'
 
 export const assignmentKeys = {
   all:        ()             => ['assignments'] as const,
@@ -33,23 +34,31 @@ export function useAssignmentsByResource(resourceId?: number) {
 }
 
 export function useAssign() {
-  const qc = useQueryClient()
+  const queryClient = useQueryClient()
+
   return useMutation({
-    mutationFn: (req: AssignmentRequest) => assignmentService.assign(req),
-    onSuccess: (_, req) => {
-      qc.invalidateQueries({
-        queryKey: assignmentKeys.byProject(req.projectId),
+    mutationFn: assignmentService.assign,
+
+    onSuccess: (_data, variables) => {
+      // Refresh assignment-related queries if you already have them
+      queryClient.invalidateQueries({
+        queryKey: ['assignments'],
       })
-      qc.invalidateQueries({
-        queryKey: assignmentKeys.byResource(req.resourceId),
+
+      // Refresh workload table for the affected month
+      queryClient.invalidateQueries({
+        queryKey: dashboardKeys.workload(variables.month),
       })
-      // Refresh resource metrics so AS and RD update immediately
-      const year = req.month.slice(0, 4)
-      qc.invalidateQueries({
-        queryKey: resourceKeys.metrics(req.resourceId, year),
+
+      // Optional: refresh dashboard and alerts for the affected year
+      const year = variables.month.substring(0, 4)
+
+      queryClient.invalidateQueries({
+        queryKey: dashboardKeys.dashboard(year),
       })
-      qc.invalidateQueries({
-        queryKey: assignmentKeys.all(),
+
+      queryClient.invalidateQueries({
+        queryKey: dashboardKeys.alerts(year),
       })
     },
   })
