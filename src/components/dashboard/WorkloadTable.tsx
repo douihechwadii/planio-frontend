@@ -29,23 +29,43 @@ export function WorkloadTable({ data }: { data: ResourceWorkload[] }) {
                                         :                        tokens.colors.semantic.success
                             }}>{r.remainingDays}</TableCell>
                             <TableCell sx={{ minWidth: 160 }}>
-                                <Box sx={{ display:"flex", alignItems:"center", gap:1 }}>
-                                    <LinearProgress variant="determinate" value={Math.min(r.utilisationPct, 100)}
-                                                    sx={{ flex:1, height:6, borderRadius:1,
-                                                        "& .MuiLinearProgress-bar": {
-                                                            bgcolor: r.utilisationPct >= 90 ? tokens.colors.semantic.danger
-                                                                : r.utilisationPct >= 75 ? tokens.colors.semantic.warning
-                                                                    : tokens.colors.semantic.success
-                                                        }
-                                                    }} />
-                                    <Typography sx={{ fontSize:12, fontWeight:600, minWidth:36,
-                                        color: r.utilisationPct >= 90 ? tokens.colors.semantic.danger
-                                            : r.utilisationPct >= 75 ? tokens.colors.semantic.warning
-                                                :                          "text.secondary" }}>
-                                        {r.utilisationPct.toFixed(0)}%
-                                    </Typography>
-                                </Box>
-                            </TableCell>
+    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        <LinearProgress
+            variant="determinate"
+            // Keep the bar capped at 100% because MUI LinearProgress only supports 0–100.
+            value={Math.min(r.utilisationPct, 100)}
+            sx={{
+                flex: 1,
+                height: 6,
+                borderRadius: 1,
+                "& .MuiLinearProgress-bar": {
+                    bgcolor:
+                        r.utilisationPct >= 100
+                            ? tokens.colors.semantic.danger
+                            : r.utilisationPct >= 75
+                                ? tokens.colors.semantic.warning
+                                : tokens.colors.semantic.success,
+                },
+            }}
+        />
+
+        <Typography
+            sx={{
+                fontSize: 12,
+                fontWeight: 600,
+                minWidth: 48,
+                color:
+                    r.utilisationPct >= 100
+                        ? tokens.colors.semantic.danger
+                        : r.utilisationPct >= 75
+                            ? tokens.colors.semantic.warning
+                            : "text.secondary",
+            }}
+        >
+            {r.utilisationPct.toFixed(0)}%
+        </Typography>
+    </Box>
+</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
