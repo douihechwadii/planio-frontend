@@ -14,12 +14,13 @@ export default function LoginPage() {
     const [loading,  setLoading]  = useState(false)
     const { login } = useAuth()
     const navigate = useNavigate()
+    const deviceId = 'web';
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         setEmail(""); setLoading(true)
         try {
-            const tokens = await authService.login({email, password})
+            const tokens = await authService.login({email, password, deviceId})
             login(tokens)
             navigate('/dashboard')
         } catch (err: any) {

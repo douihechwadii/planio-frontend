@@ -52,7 +52,7 @@ api.interceptors.response.use(
                 import.meta.env.PROD
                     ? `${import.meta.env.VITE_API_URL ?? ''}/api/auth/refresh-token`
                     : '/api/auth/refresh-token',
-                { refreshToken }
+                { refreshToken, deviceId: 'web' }
             )
             localStorage.setItem('accessToken',  data.accessToken)
             localStorage.setItem('refreshToken', data.refreshToken)
