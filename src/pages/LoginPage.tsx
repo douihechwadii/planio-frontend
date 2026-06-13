@@ -18,7 +18,7 @@ export default function LoginPage() {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        setEmail(""); setLoading(true)
+        setError(""); setLoading(true)
         try {
             const tokens = await authService.login({email, password, deviceId})
             login(tokens)
