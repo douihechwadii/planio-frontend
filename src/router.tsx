@@ -10,6 +10,7 @@ import  ResourcesPage        from '@/pages/ResourcesPage'
 import  ResourceDetailPage   from '@/pages/ResourceDetailPage'
 import  AssignmentsPage      from '@/pages/AssignmentsPage'
 import  UsersPage            from '@/pages/UsersPage'
+import { RequireRole } from './components/layout/RequireRole'
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +31,13 @@ export const router = createBrowserRouter([
           { path: 'resources',            element: <ResourcesPage /> },
           { path: 'resources/:id',        element: <ResourceDetailPage /> },
           { path: 'assignments',          element: <AssignmentsPage /> },
-          { path: '/admin/users',         element: <UsersPage /> },
+          
+          {
+            element: <RequireRole allowed={['ADMIN']} />,
+            children: [
+              { path: '/admin/users', element: <UsersPage /> },
+            ]
+          }
         ]
       }
     ]

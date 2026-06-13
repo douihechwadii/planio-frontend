@@ -8,6 +8,7 @@ import { PageHeader }  from '@/components/layout/PageHeader'
 import { Project }     from '@/types/project'
 import { StatusChip } from '@/components/ui/StatusChip'
 import { ProjectForm } from '@/components/projects/ProjectForm'
+import { Can } from '@/components/layout/Can'
 
 export default function ProjectsPage() {
     
@@ -21,7 +22,7 @@ export default function ProjectsPage() {
     return (
         <Box>
             <PageHeader title="Projects" subtitle={`${projects?.length ?? 0} projects`}
-                action={<Button variant="contained" onClick={() => { setEditing(null); setShowForm(true) }}>+ Add Project</Button>}/>
+                action={<Can roles={['ADMIN']}><Button variant="contained" onClick={() => { setEditing(null); setShowForm(true) }}>+ Add Project</Button></Can>}/>
             
             <TableContainer component={Paper} sx={{ borderRadius: 1 }}>
                 <Table size="small">
@@ -47,11 +48,8 @@ export default function ProjectsPage() {
                                 <TableCell>{p.goLiveDate}</TableCell>
                                 <TableCell><StatusChip status={p.status} /></TableCell>
                                 <TableCell align="right">
-                                    <Button size="small" onClick={() => { setEditing(p); setShowForm(true) }}>Edit</Button>
-                                    <Button size="small" color="error"
-                                            onClick={() => { if (confirm('Delete this project?')) deleteProject.mutate(p.id) }}>
-                                        Delete
-                                    </Button>
+                                    <Can roles={['ADMIN']}><Button size="small" onClick={() => { setEditing(p); setShowForm(true) }}>Edit</Button></Can>
+                                    <Can roles={['ADMIN']}><Button size="small" color="error" onClick={() => { if (confirm('Delete this project?')) deleteProject.mutate(p.id) }}>Delete</Button></Can>
                                 </TableCell>
                             </TableRow>
                         ))}

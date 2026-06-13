@@ -7,7 +7,7 @@ interface AuthContextType {
     isInitialised:  boolean   // true once the token check is complete
     login:  (tokens: AuthResponse) => void
     logout: () => void
-    role: String | null
+    role: string | null
     uid: number | null
 }
 
