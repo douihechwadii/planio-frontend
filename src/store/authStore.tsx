@@ -8,6 +8,7 @@ interface AuthContextType {
     login:  (tokens: AuthResponse) => void
     logout: () => void
     role: String | null
+    uid: number | null
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -35,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [accessToken,   setAccessToken]   = useState<string | null>(null)
     const [isInitialised, setIsInitialised] = useState(false)
     const [role, setRole] = useState<string | null>(null)
+    const [uid, setUid] = useState<number | null>(null)
 
     // On mount: read the stored token and validate it is not expired.
     // If it is expired or missing, clear storage so the user goes to /login.
@@ -45,12 +47,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             const decoded = decodeToken(stored)
             setRole(decoded?.role ?? null)
+            setUid(decoded?.uid ?? null)
         } else {
             // Token missing or expired — clear everything
             localStorage.removeItem('accessToken')
             localStorage.removeItem('refreshToken')
             setAccessToken(null)
             setRole(null)
+            setUid(null)
         }
         setIsInitialised(true)
     }, [])
@@ -62,6 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         const decoded = decodeToken(tokens.accessToken)
         setRole(decoded?.role ?? null)
+        setUid(decoded?.uid ?? null)
     }
 
     const logout = () => {
@@ -69,10 +74,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem('refreshToken')
         setAccessToken(null)
         setRole(null)
+        setUid(null)
     }
 
     return (
-        <AuthContext.Provider value={{ accessToken, isLoggedIn: !!accessToken, isInitialised, login, logout, role, }}>
+        <AuthContext.Provider value={{ accessToken, isLoggedIn: !!accessToken, isInitialised, login, logout, role, uid}}>
             {children}
         </AuthContext.Provider>
     )

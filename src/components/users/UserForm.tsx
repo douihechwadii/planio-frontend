@@ -2,11 +2,17 @@ import { useState } from "react";
 import { Box, Button, TextField, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import { UpdateUserRequest, User, UserRole } from "@/types/user";
 import { useCreateUser, useUpdateUser } from "@/hooks/useUsers";
+import { useAuth } from "@/store/authStore";
+import useRefreshToken from "@/hooks/useRefreshToken";
+import { replace, useNavigate } from "react-router-dom";
 
 interface UserFormProps { user?: User; onSuccess: () => void }
 
 export function UserForm({ user, onSuccess }: UserFormProps) {
     const isEdit = !!user
+    const { uid } = useAuth()
+    const refreshToken = useRefreshToken()
+    const navigate = useNavigate()
     const [form, setForm] = useState<UpdateUserRequest>({
         email:    user?.email    ?? "",
         password: "",
@@ -19,6 +25,8 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
     const set = (field: keyof UpdateUserRequest) => (e: any) =>
         setForm(prev => ({ ...prev, [field]: e.target.value }))
 
+    const isEditingSelf = isEdit && user?.id === uid;
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault(); setError("")
         try {
@@ -29,6 +37,10 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
                     ...(form.password === "" && { password: undefined }),
                 }
                 await updateUser.mutateAsync(payload)
+                if (isEditingSelf) {
+                    await refreshToken()
+                    navigate("/dashboard", { replace: true })
+                }
             } else {
                 await createUser.mutateAsync(form)
             }

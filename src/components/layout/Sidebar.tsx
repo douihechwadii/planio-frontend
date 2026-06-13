@@ -22,7 +22,7 @@ export function Sidebar() {
   { href: '/assignments', label: 'Assignments', Icon: SwapHoriz },
 
   ...(role == 'ADMIN'
-    ? [{ href: 'admin/users', label: 'Users', Icon: People },]
+    ? [{ href: '/admin/users', label: 'Users', Icon: People },]
   : []),
   ]
 
