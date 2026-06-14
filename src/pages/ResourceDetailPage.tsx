@@ -7,6 +7,7 @@ import { PageHeader }   from '@/components/layout/PageHeader'
 import { StatusChip }   from '@/components/ui/StatusChip'
 import { ResourceForm } from '@/components/resources/ResourceForm'
 import { MetricsTable } from '@/components/resources/MetricsTable'
+import { Can } from '@/components/layout/Can'
 
 export default function ResourceDetailPage() {
     const { id } = useParams<{ id: string }>()
@@ -23,7 +24,7 @@ export default function ResourceDetailPage() {
     return (
         <Box sx={{ display:"flex", flexDirection:"column", gap:3 }}>
             <PageHeader title={resource.fullName} subtitle={resource.role}
-                        action={<Button variant="outlined" onClick={() => setShowEdit(true)}>Edit</Button>} />
+                        action={<Can roles={['ADMIN']}><Button variant="outlined" onClick={() => setShowEdit(true)}>Edit</Button></Can>} />
             <Grid container spacing={2}>
                 {[
                     { label:"Email", value: resource.email },

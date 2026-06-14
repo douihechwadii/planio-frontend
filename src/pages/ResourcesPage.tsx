@@ -7,6 +7,7 @@ import { PageHeader }   from '@/components/layout/PageHeader'
 import { StatusChip }   from '@/components/ui/StatusChip'
 import { ResourceForm } from '@/components/resources/ResourceForm'
 import { Resource } from '@/types/resource'
+import { Can } from '@/components/layout/Can'
 
 export default function ResourcesPage() {
     const { data: resources, isLoading } = useResources()
@@ -19,7 +20,7 @@ export default function ResourcesPage() {
     return (
         <Box>
             <PageHeader title="Resources" subtitle={`${resources?.length ?? 0} team members`}
-                        action={<Button variant="contained" onClick={() => { setEditing(null); setShowForm(true) }}>+ Add Resource</Button>} />
+                        action={<Can roles={['ADMIN']}><Button variant="contained" onClick={() => { setEditing(null); setShowForm(true) }}>+ Add Resource</Button></Can>} />
             <TableContainer component={Paper} sx={{ borderRadius: 1 }}>
                 <Table size="small">
                     <TableHead><TableRow>
@@ -38,11 +39,13 @@ export default function ResourcesPage() {
                                 <TableCell sx={{ color:"text.secondary" }}>{r.email}</TableCell>
                                 <TableCell><StatusChip status={r.status} /></TableCell>
                                 <TableCell align="right">
-                                    <Button size="small" onClick={() => { setEditing(r); setShowForm(true) }}>Edit</Button>
-                                    <Button size="small" color="error"
+                                    <Can roles={['ADMIN']}><Button size="small" onClick={() => { setEditing(r); setShowForm(true) }}>Edit</Button></Can>
+                                    <Can roles={['ADMIN']}>
+                                        <Button size="small" color="error"
                                             onClick={() => { if (confirm('Delete this resource?')) deleteResource.mutate(r.id) }}>
-                                        Delete
-                                    </Button>
+                                            Delete
+                                        </Button>
+                                    </Can>
                                 </TableCell>
                             </TableRow>
                         ))}

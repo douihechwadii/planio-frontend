@@ -7,6 +7,7 @@ import { useResources } from '@/hooks/useResources'
 import { useAssignments, useAssignmentsByProject, useAssignmentsByResource, useDeleteAssignment } from '@/hooks/useAssignments'
 import { PageHeader }     from '@/components/layout/PageHeader'
 import { AssignmentForm } from '@/components/assignments/AssignmentForm'
+import { Can } from '@/components/layout/Can'
 
 type FilterMode = 'project' | 'resource'
 
@@ -28,7 +29,7 @@ export default function AssignmentsPage() {
     return (
         <Box>
             <PageHeader title="Assignments" subtitle="Assign resources to projects by month"
-                        action={<Button variant="contained" onClick={() => setShowForm(true)}>+ New Assignment</Button>} />
+                        action={<Can roles={['ADMIN']}><Button variant="contained" onClick={() => setShowForm(true)}>+ New Assignment</Button></Can>} />
             <Box sx={{ display:"flex", gap:2, mb:2 }}>
                 <FormControl size="small" sx={{ minWidth: 180 }}>
                     <InputLabel>Filter by</InputLabel>
@@ -66,10 +67,12 @@ export default function AssignmentsPage() {
                                     <TableCell >{a.month}</TableCell>
                                     <TableCell sx={{ fontWeight:600, color:"primary.main" }}>{a.daysAssigned}</TableCell>
                                     <TableCell align="right">
-                                        <Button size="small" color="error"
+                                        <Can roles={['ADMIN']}>
+                                            <Button size="small" color="error"
                                                 onClick={() => { if (confirm('Remove this assignment?')) deleteAssignment.mutate(a.id) }}>
-                                            Remove
-                                        </Button>
+                                                Remove
+                                            </Button>
+                                        </Can>
                                     </TableCell>
                                 </TableRow>
                             ))}

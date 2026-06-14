@@ -18,6 +18,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { StatusChip } from '@/components/ui/StatusChip'
 import { ProjectForm } from '@/components/projects/ProjectForm'
 import { MonthlyPlanGrid } from '@/components/projects/MonthlyPlanGrid'
+import { Can } from '@/components/layout/Can'
 
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -72,9 +73,11 @@ export default function ProjectDetailPage() {
         title={project.name}
         subtitle={project.client}
         action={
-          <Button variant="outlined" onClick={() => setShowEdit(true)}>
-            Edit Project
-          </Button>
+          <Can roles={['ADMIN']}>
+            <Button variant="outlined" onClick={() => setShowEdit(true)}>
+              Edit Project
+            </Button>
+          </Can>
         }
       />
 
