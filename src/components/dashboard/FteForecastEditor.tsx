@@ -3,12 +3,15 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
     TextField, Typography, Box } from '@mui/material'
 import { MonthlyCapacity }   from '@/types/dashboard'
 import { useSetFteForecast } from '@/hooks/useDashboard'
+import { Can } from '../layout/Can'
+import { useRole } from '@/hooks/useRole'
 
 function ForecastCell({ month, current, year }: { month: string; current: number; year: string }) {
     const [editing, setEditing] = useState(false)
     const [value,   setValue]   = useState(String(current))
     const inputRef              = useRef<HTMLInputElement>(null)
     const setFte                = useSetFteForecast(year)
+    const { isAdmin }           = useRole()
 
     useEffect(() => { setValue(String(current)) }, [current])
     useEffect(() => { if (editing) inputRef.current?.focus() }, [editing])
@@ -38,8 +41,8 @@ function ForecastCell({ month, current, year }: { month: string; current: number
     }
 
     return (
-        <Typography onClick={() => setEditing(true)}
-                    sx={{ cursor:"pointer", color:"primary.main", textDecoration:"underline dotted",
+        <Typography onClick={isAdmin ? () => setEditing(true) : undefined }
+                    sx={{ cursor: isAdmin ? "pointer" : ":default", color: isAdmin ? "primary.main" : "text.primary", textDecoration:isAdmin ? "underline dotted" : "none",
                         fontFamily:"monospace", fontSize:13 }}>
             {current.toFixed(1)}
         </Typography>
@@ -53,7 +56,9 @@ export function FteForecastEditor({ data, year }: { data: MonthlyCapacity[]; yea
         <Paper sx={{ borderRadius: 1, overflow: "hidden" }}>
             <Box sx={{ px:2.5, py:1.5, borderBottom:"1px solid", borderColor:"divider" }}>
                 <Typography variant="h3" sx={{ fontSize:14 }}>FTE Forecast (Headcount)</Typography>
-                <Typography variant="caption" color="text.disabled">Click any value to edit the planned headcount for that month.</Typography>
+                <Can roles={['ADMIN']}>
+                    <Typography variant="caption" color="text.disabled">Click any value to edit the planned headcount for that month.</Typography>
+                </Can>
             </Box>
             <TableContainer sx={{ overflowX:"auto" }}>
                 <Table size="small" sx={{ minWidth:"max-content" }}>

@@ -3,6 +3,8 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { ResourceMetrics } from '@/types/resource'
 import { AbsenceCell }    from './AbsenceCell'
 import { tokens }         from '@/theme/tokens'
+import { Can } from '../layout/Can'
+import { useRole } from '@/hooks/useRole'
 
 interface MetricsTableProps { resourceId: number; metrics: ResourceMetrics[]; year: string }
 
@@ -16,6 +18,7 @@ const ROWS: { key: keyof ResourceMetrics; label: string }[] = [
 
 export function MetricsTable({ resourceId, metrics, year }: MetricsTableProps) {
     const [editingMonth, setEditingMonth] = useState<string | null>(null)
+    const { isAdmin } = useRole()
 
     if (!metrics.length) return <Typography sx={{ color: "text.secondary", fontSize: 13 }}>No metrics available.</Typography>
 
@@ -56,9 +59,9 @@ export function MetricsTable({ resourceId, metrics, year }: MetricsTableProps) {
                                 const val   = m[key] as number
                                 return (
                                     <TableCell key={m.month} align="center"
-                                               onClick={isAD ? () => setEditingMonth(m.month) : undefined}
+                                               onClick={isAD && isAdmin ? () => setEditingMonth(m.month) : undefined}
                                                sx={{
-                                                   cursor: isAD ? "pointer" : "default",
+                                                   cursor: isAD && isAdmin ? "pointer" : "default",
                                                    fontFamily: "DM Mono, monospace",
                                                    '&:hover': isAD ? { bgcolor: tokens.colors.brand.lightPink } : {},
                                                    color: isRD && val < 0  ? tokens.colors.semantic.danger
@@ -69,8 +72,10 @@ export function MetricsTable({ resourceId, metrics, year }: MetricsTableProps) {
                                                }}
                                     >
                                         {isAD && editingMonth === m.month ? (
-                                            <AbsenceCell resourceId={resourceId} month={m.month}
+                                            <Can roles={['ADMIN']}>
+                                                <AbsenceCell resourceId={resourceId} month={m.month}
                                                          currentDays={val} year={year} onDone={() => setEditingMonth(null)} />
+                                            </Can>
                                         ) : val}
                                     </TableCell>
                                 )
@@ -79,9 +84,11 @@ export function MetricsTable({ resourceId, metrics, year }: MetricsTableProps) {
                     ))}
                 </TableBody>
             </Table>
-            <Typography variant="caption" sx={{ display:"block", px:2, py:1, color:"text.disabled" }}>
-                Click any AD cell to enter absence days for that month.
-            </Typography>
+            <Can roles={['ADMIN']}>
+                <Typography variant="caption" sx={{ display:"block", px:2, py:1, color:"text.disabled" }}>
+                    Click any AD cell to enter absence days for that month.
+                </Typography>
+            </Can>
         </TableContainer>
     )
 }
