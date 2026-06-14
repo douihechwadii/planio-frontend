@@ -1,5 +1,5 @@
 import api from '@/lib/axios'
-import { Project, MonthlyPlan, ProjectRequest } from '@/types/project'
+import { Project, MonthlyPlan, ProjectRequest, UpdateMonthlyPlanRequest } from '@/types/project'
 
 export const projectService = {
 
@@ -39,4 +39,13 @@ export const projectService = {
   delete: async (id: number): Promise<void> => {
     await api.delete(`/api/projects/${id}`)
   },
+
+  // PUT /api/projects/:id/monthly-plan
+  updateMonthlyPlans: async (
+    id: number,
+    updates: UpdateMonthlyPlanRequest []
+  ): Promise<Project> => {
+    const { data } = await api.put<Project>(`/api/projects/${id}/monthly-plan`, updates)
+    return data
+  }
 }

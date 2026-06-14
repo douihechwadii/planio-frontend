@@ -109,7 +109,7 @@ export default function ProjectDetailPage() {
         <Typography variant="h6" sx={{ mb: 2 }}>
           Monthly Plan
         </Typography>
-        <MonthlyPlanGrid plans={monthlyPlan} />
+        <MonthlyPlanGrid projectId={projectId} plans={monthlyPlan} />
       </Box>
 
       {/* Edit dialog */}

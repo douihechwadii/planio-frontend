@@ -24,3 +24,8 @@ export interface ProjectRequest {
   goLiveDate: string
   status?: ProjectStatus
 }
+
+export interface UpdateMonthlyPlanRequest {
+  month: string
+  daysPlanned: number
+}
