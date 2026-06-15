@@ -9,8 +9,12 @@ export function getProjectMonths(start: string, end: string) {
   const endMonth = new Date(last.getFullYear(), last.getMonth(), 1)
 
   while (current <= endMonth) {
-    months.push(current.toISOString().slice(0, 7))
-    current = new Date(current.getFullYear(), current.getMonth() + 1, 1)
+    //months.push(current.toISOString().slice(0, 7))
+    //current = new Date(current.getFullYear(), current.getMonth() + 1, 1)
+    const y = current.getFullYear()
+    const m = String(current.getMonth() + 1).padStart(2, '0')
+    months.push(`${y}-${m}`)
+    current = new Date(y, current.getMonth() + 1, 1)
   }
 
   return months
