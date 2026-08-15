@@ -1,5 +1,5 @@
 import { Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography, Menu, MenuItem, IconButton, Divider } from '@mui/material'
-import { GridView, Folder, People, SwapHoriz, Person } from '@mui/icons-material'
+import { GridView, Folder, People, SwapHoriz, Person, AddBox, AssignmentAdd, PermIdentity, ExitToApp, AccountCircle } from '@mui/icons-material'
 import { useLocation, Link } from 'react-router-dom'
 import { tokens } from '@/theme/tokens'
 import logo from '@/assets/logo.svg'
@@ -19,10 +19,11 @@ export function Sidebar() {
   { href: '/dashboard',   label: 'Dashboard',   Icon: GridView  },
   { href: '/projects',    label: 'Projects',    Icon: Folder    },
   { href: '/resources',   label: 'Resources',   Icon: People    },
-  { href: '/assignments', label: 'Assignments', Icon: SwapHoriz },
+  { href: '/assignments', label: 'Assignments', Icon: AssignmentAdd },
+  { href: '/sandbox', label: 'Simulations', Icon: AddBox },
 
   ...(role == 'ADMIN'
-    ? [{ href: '/admin/users', label: 'Users', Icon: People },]
+    ? [{ href: '/admin/users', label: 'Users', Icon: Person },]
   : []),
   ]
 
@@ -91,7 +92,7 @@ export function Sidebar() {
         justifyContent: "space-between",
         color: "rgba(255,255,255,0.8)",
       }}>
-        <Person fontSize='small'/>
+        <AccountCircle fontSize='medium'/>
 
         <Typography sx={{
           fontSize: 13,
@@ -111,7 +112,7 @@ export function Sidebar() {
             bgcolor: "rgba(255,77,79,0.1)",
           },
         }}>
-          <SwapHoriz fontSize='small'/>
+          <ExitToApp fontSize='small'/>
         </IconButton>
 
       </Box>

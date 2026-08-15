@@ -10,6 +10,8 @@ import  ResourcesPage        from '@/pages/ResourcesPage'
 import  ResourceDetailPage   from '@/pages/ResourceDetailPage'
 import  AssignmentsPage      from '@/pages/AssignmentsPage'
 import  UsersPage            from '@/pages/UsersPage'
+import SandboxListPage from './pages/SandboxListPage'
+import SandboxBuilderPage from './pages/SandboxBuilderPage'
 import { RequireRole } from './components/layout/RequireRole'
 
 export const router = createBrowserRouter([
@@ -31,6 +33,9 @@ export const router = createBrowserRouter([
           { path: 'resources',            element: <ResourcesPage /> },
           { path: 'resources/:id',        element: <ResourceDetailPage /> },
           { path: 'assignments',          element: <AssignmentsPage /> },
+          // wherever your routes are defined, alongside the existing /projects routes
+          { path: '/sandbox', element: <SandboxListPage /> },
+          { path: '/sandbox/:id',  element:<SandboxBuilderPage />},
           
           {
             element: <RequireRole allowed={['ADMIN']} />,

@@ -2,8 +2,9 @@ import { Chip } from '@mui/material'
 import { ProjectStatus } from '@/types/project'
 import { ResourceStatus } from '@/types/resource'
 import { tokens } from '@/theme/tokens'
+import { SandboxStatus } from '@/types/sandbox'
 
-type Status = ProjectStatus | ResourceStatus
+type Status = ProjectStatus | ResourceStatus | SandboxStatus
 
 const statusConfig: Record<string, { bg: string; color: string }> = {
     PLANNED:   { bg: tokens.colors.semantic.infoLight,    color: tokens.colors.semantic.info },
@@ -11,6 +12,10 @@ const statusConfig: Record<string, { bg: string; color: string }> = {
     CLOSED: { bg: tokens.colors.brand.lightGray,       color: tokens.colors.brand.darkGray },
     INACTIVE:  { bg: tokens.colors.brand.lightGray,       color: tokens.colors.brand.darkGray },
     ON_LEAVE:  { bg: tokens.colors.semantic.warningLight, color: tokens.colors.semantic.warning },
+    DRAFT: { bg: tokens.colors.brand.lightGray,       color: tokens.colors.brand.darkGray },
+    SIMULATED: { bg: tokens.colors.semantic.successLight, color: tokens.colors.semantic.success },
+    SAVED: { bg: tokens.colors.semantic.infoLight,    color: tokens.colors.semantic.info },
+    APPLIED: { bg: tokens.colors.semantic.successLight, color: tokens.colors.semantic.success },
 }
 
 export function StatusChip({ status }: { status: Status }) {
