@@ -1,5 +1,5 @@
 import { Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText, Typography, Menu, MenuItem, IconButton, Divider } from '@mui/material'
-import { GridView, Folder, People, SwapHoriz, Person, AddBox, AssignmentAdd, PermIdentity, ExitToApp, AccountCircle } from '@mui/icons-material'
+import { GridView, Folder, People, SwapHoriz, Person, AddBox, AssignmentAdd, PermIdentity, ExitToApp, AccountCircle, AssignmentInd } from '@mui/icons-material'
 import { useLocation, Link } from 'react-router-dom'
 import { tokens } from '@/theme/tokens'
 import logo from '@/assets/logo.svg'
@@ -18,6 +18,7 @@ export function Sidebar() {
   const navItems = [
   { href: '/dashboard',   label: 'Dashboard',   Icon: GridView  },
   { href: '/projects',    label: 'Projects',    Icon: Folder    },
+  { href: '/clients', label: 'Clients', Icon: AssignmentInd },
   { href: '/resources',   label: 'Resources',   Icon: People    },
   { href: '/assignments', label: 'Assignments', Icon: AssignmentAdd },
   { href: '/sandbox', label: 'Simulations', Icon: AddBox },

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { projectService } from '@/services/projectService'
 import { ProjectRequest, MonthlyPlan, UpdateMonthlyPlanRequest } from '@/types/project'
+import { clientKeys } from '@/hooks/useClients'
 
 // ── Query keys — centralised to avoid typos ───────────────────────────
 export const projectKeys = {
@@ -44,6 +45,8 @@ export function useCreateProject() {
     mutationFn: (req: ProjectRequest) => projectService.create(req),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: projectKeys.all })
+      qc.invalidateQueries({ queryKey: clientKeys.all })   // active-project counts changed
+      qc.invalidateQueries({ queryKey: ['dashboard'] })
     },
   })
 }
@@ -55,6 +58,8 @@ export function useUpdateProject(id: number) {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: projectKeys.all })
       qc.invalidateQueries({ queryKey: projectKeys.detail(id) })
+      qc.invalidateQueries({ queryKey: clientKeys.all })   // status change affects the count
+      qc.invalidateQueries({ queryKey: ['dashboard'] })
     },
   })
 }
@@ -65,6 +70,8 @@ export function useDeleteProject() {
     mutationFn: (id: number) => projectService.delete(id),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: projectKeys.all })
+      qc.invalidateQueries({ queryKey: clientKeys.all })   // deleted project no longer counts
+      qc.invalidateQueries({ queryKey: ['dashboard'] })
     },
   })
 }

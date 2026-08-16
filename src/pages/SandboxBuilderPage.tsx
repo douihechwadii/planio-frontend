@@ -52,6 +52,10 @@ export default function SandboxBuilderPage() {
     return <Typography color="error">Simulation not found.</Typography>
   }
 
+  const resourceNames = Object.fromEntries(
+    sandbox.picks.map((p) => [p.resourceId, p.resourceName])
+  )
+
   const isApplied = sandbox.status === 'APPLIED'
   const hasFreshResult = !sandbox.resultDirty && sandbox.lastResult
 
@@ -103,7 +107,7 @@ export default function SandboxBuilderPage() {
         </Box>
       )}
 
-      {hasFreshResult && <SandboxResultsPanel result={sandbox.lastResult!} />}
+      {hasFreshResult && <SandboxResultsPanel result={sandbox.lastResult!} resourceNames={resourceNames} />}
 
       {sandbox.resultDirty && sandbox.lastResult && (
         <Alert severity="info">Picks changed since the last simulation — run Simulate again to see updated results.</Alert>

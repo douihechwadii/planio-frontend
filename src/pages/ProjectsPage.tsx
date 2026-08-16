@@ -43,7 +43,7 @@ export default function ProjectsPage() {
                                         {p.name}
                                     </Typography>
                                 </TableCell>
-                                <TableCell>{p.client}</TableCell>
+                                <TableCell>{p.client.name}</TableCell>
                                 <TableCell>{p.kickoffDate}</TableCell>
                                 <TableCell>{p.goLiveDate}</TableCell>
                                 <TableCell><StatusChip status={p.status} /></TableCell>

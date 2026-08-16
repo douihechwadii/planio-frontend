@@ -25,12 +25,12 @@ export interface SandboxSummary {
 }
 
 export interface ResourceMonthMetrics {
-    month: string
-    wk: number
-    ad: number
-    av: number
-    as: number
-    rd: number
+  month: string
+  workingDays: number
+  absenceDays: number
+  availableDays: number
+  assignedDays: number
+  remainingDays: number
 }
 
 export interface MonthlyPlanLine {

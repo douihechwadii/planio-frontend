@@ -2,7 +2,7 @@ export interface Assignment {
   id: number
   projectId: number
   projectName: string
-  client: string
+  clientName: string
   resourceId: number
   resourceFullName: string
   resourceRole: string

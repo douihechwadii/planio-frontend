@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {
   Box,
   Button,
@@ -65,13 +65,21 @@ export default function ProjectDetailPage() {
       label: 'Months',
       value: monthlyPlan.length,
     },
+    {
+      label: 'Client',
+      value: (
+        <Typography component={Link} to={`/clients/${project.client.id}`} sx={{ color: 'primary.main', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+          {project.client.name}
+        </Typography>
+      ),
+    }
   ]
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <PageHeader
         title={project.name}
-        subtitle={project.client}
+        subtitle={project.client.name}
         action={
           <Can roles={['ADMIN']}>
             <Button variant="outlined" onClick={() => setShowEdit(true)}>

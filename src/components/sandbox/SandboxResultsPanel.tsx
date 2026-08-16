@@ -6,9 +6,10 @@ import { SimulationResult } from '@/types/sandbox'
 
 interface Props {
   result: SimulationResult
+  resourceNames: Record<number, string>
 }
 
-export function SandboxResultsPanel({ result }: Props) {
+export function SandboxResultsPanel({ result, resourceNames }: Props) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       {result.warnings.length > 0 && (
@@ -54,6 +55,9 @@ export function SandboxResultsPanel({ result }: Props) {
           <Typography variant="h6" sx={{ mb: 2 }}>Resource Metrics</Typography>
           {Object.entries(result.byResource).map(([resourceId, metrics]) => (
             <Box key={resourceId} sx={{ mb: 3 }}>
+              <Typography sx={{ fontWeight: 600, mb: 1 }}>
+                {resourceNames[Number(resourceId)] ?? `Resource #${resourceId}`}
+              </Typography>
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -69,12 +73,12 @@ export function SandboxResultsPanel({ result }: Props) {
                   {metrics.map((m) => (
                     <TableRow key={m.month}>
                       <TableCell>{m.month}</TableCell>
-                      <TableCell>{m.wk}</TableCell>
-                      <TableCell>{m.ad}</TableCell>
-                      <TableCell>{m.av}</TableCell>
-                      <TableCell>{m.as}</TableCell>
-                      <TableCell sx={{ color: m.rd < 0 ? 'error.main' : undefined, fontWeight: m.rd < 0 ? 600 : undefined }}>
-                        {m.rd}
+                      <TableCell>{m.workingDays}</TableCell>
+                      <TableCell>{m.absenceDays}</TableCell>
+                      <TableCell>{m.availableDays}</TableCell>
+                      <TableCell>{m.assignedDays}</TableCell>
+                      <TableCell sx={{ color: m.remainingDays < 0 ? 'error.main' : undefined, fontWeight: m.remainingDays < 0 ? 600 : undefined }}>
+                        {m.remainingDays}
                       </TableCell>
                     </TableRow>
                   ))}

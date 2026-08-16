@@ -1,9 +1,11 @@
+import { ClientSummary } from "./client"
+
 export type ProjectStatus = 'PLANNED' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
 
 export interface Project {
   id: number
   name: string
-  client: string
+  client: ClientSummary
   kickoffDate: string   // 'YYYY-MM-DD'
   goLiveDate: string    // 'YYYY-MM-DD'
   status: ProjectStatus
@@ -19,7 +21,7 @@ export interface MonthlyPlan {
 
 export interface ProjectRequest {
   name: string
-  client: string
+  clientId: number
   kickoffDate: string
   goLiveDate: string
   status?: ProjectStatus

@@ -13,6 +13,8 @@ import  UsersPage            from '@/pages/UsersPage'
 import SandboxListPage from './pages/SandboxListPage'
 import SandboxBuilderPage from './pages/SandboxBuilderPage'
 import { RequireRole } from './components/layout/RequireRole'
+import ClientsPage from './pages/ClientsPage'
+import ClientDetailPage from './pages/ClientDetailPage'
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +32,8 @@ export const router = createBrowserRouter([
           { path: 'dashboard',            element: <DashboardPage /> },
           { path: 'projects',             element: <ProjectsPage /> },
           { path: 'projects/:id',         element: <ProjectDetailPage /> },
+          { path: 'clients/',         element: <ClientsPage/> },
+          { path: 'clients/:id',         element: <ClientDetailPage/> },
           { path: 'resources',            element: <ResourcesPage /> },
           { path: 'resources/:id',        element: <ResourceDetailPage /> },
           { path: 'assignments',          element: <AssignmentsPage /> },

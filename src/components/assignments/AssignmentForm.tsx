@@ -70,7 +70,7 @@ export function AssignmentForm({ defaultProjectId, defaultResourceId, onSuccess 
         <Select value={form.projectId} label='Project'
           onChange={e => setForm(p => ({ ...p, projectId: e.target.value as number }))}>
           {projects?.map(p => (
-            <MenuItem key={p.id} value={p.id}>{p.name} — {p.client}</MenuItem>
+            <MenuItem key={p.id} value={p.id}>{p.name} — {p.client.name}</MenuItem>
           ))}
         </Select>
       </FormControl>
