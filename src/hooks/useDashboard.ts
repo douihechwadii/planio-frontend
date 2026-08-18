@@ -3,27 +3,25 @@ import { dashboardService } from '@/services/dashboardService'
 import { FteSnapshotRequest } from '@/types/dashboard'
 
 export const dashboardKeys = {
-    dashboard: (year: string) => ['dashboard', year]          as const,
-    workload:  (month: string) => ['dashboard', 'workload', month] as const,
+    dashboard: (year: string, projectId?: number) => ['dashboard', year, projectId ?? 'all'] as const,
+    workload:  (month: string, projectId?: number) => ['dashboard', 'workload', month, projectId ?? 'all'] as const,
     alerts:    (year: string) => ['dashboard', 'alerts', year] as const,
 }
 
-// Full-year dashboard — all 8 FTE metrics per month
-export function useDashboard(year: string) {
+export function useDashboard(year: string, projectId?: number) {
     const from = `${year}-01`
     const to   = `${year}-12`
     return useQuery({
-        queryKey: dashboardKeys.dashboard(year),
-        queryFn:  () => dashboardService.getDashboard(from, to),
+        queryKey: dashboardKeys.dashboard(year, projectId),
+        queryFn:  () => dashboardService.getDashboard(from, to, projectId),
         enabled:  !!year,
     })
 }
 
-// Per-resource workload for one specific month
-export function useWorkload(month: string) {
+export function useWorkload(month: string, projectId?: number) {
     return useQuery({
-        queryKey: dashboardKeys.workload(month),
-        queryFn:  () => dashboardService.getWorkload(month),
+        queryKey: dashboardKeys.workload(month, projectId),
+        queryFn:  () => dashboardService.getWorkload(month, projectId),
         enabled:  !!month,
     })
 }
@@ -51,3 +49,4 @@ export function useSetFteForecast(year: string) {
         },
     })
 }
+

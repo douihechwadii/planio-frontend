@@ -8,23 +8,17 @@ import {
 
 export const dashboardService = {
 
-    // GET /api/dashboard?from=YYYY-MM&to=YYYY-MM
-    getDashboard: async (
-        from: string,
-        to: string
-    ): Promise<MonthlyCapacity[]> => {
+    getDashboard: async (from: string, to: string, projectId?: number): Promise<MonthlyCapacity[]> => {
         const { data } = await api.get<MonthlyCapacity[]>('/api/dashboard', {
-            params: { from, to },
+            params: { from, to, projectId },
         })
         return data
     },
 
-    // GET /api/dashboard/workload?month=YYYY-MM
-    getWorkload: async (month: string): Promise<ResourceWorkload[]> => {
-        const { data } = await api.get<ResourceWorkload[]>(
-            '/api/dashboard/workload',
-            { params: { month } }
-        )
+    getWorkload: async (month: string, projectId?: number): Promise<ResourceWorkload[]> => {
+        const { data } = await api.get<ResourceWorkload[]>('/api/dashboard/workload', {
+            params: { month, projectId },
+        })
         return data
     },
 
@@ -40,4 +34,6 @@ export const dashboardService = {
     setFteForecast: async (req: FteSnapshotRequest): Promise<void> => {
         await api.put('/api/dashboard/fte-forecast', req)
     },
+
+    
 }
