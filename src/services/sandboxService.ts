@@ -1,5 +1,5 @@
 import api from '@/lib/axios'
-import { Sandbox, SandboxSummary, SimulationResult, CreateSandboxRequest, UpdateSandboxPicksRequest, ApplyResult } from '@/types/sandbox'
+import { Sandbox, SandboxSummary, SimulationResult, CreateSandboxRequest, UpdateSandboxPicksRequest, ApplyResult, AutoFillResult } from '@/types/sandbox'
 
 export const sandboxService = {
     findAll: async (): Promise<SandboxSummary[]> => {
@@ -48,6 +48,11 @@ export const sandboxService = {
 
     apply: async (id: number): Promise<ApplyResult> => {
         const { data } = await api.post<ApplyResult>(`/api/sandboxes/${id}/apply`)
+        return data
+    },
+    
+    autoFill: async (id: number, months: string[] | null): Promise<AutoFillResult> => {
+        const { data } = await api.post<AutoFillResult>(`/api/sandboxes/${id}/auto-fill`, { months })
         return data
     },
 }

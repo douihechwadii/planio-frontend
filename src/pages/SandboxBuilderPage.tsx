@@ -7,6 +7,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { SandboxPickerCard } from '@/components/sandbox/SandboxPickerCard'
 import { SandboxResultsPanel } from '@/components/sandbox/SandboxResultsPanel'
 import { SandboxPickRequest } from '@/types/sandbox'
+import { AutoFillPanel } from '@/components/sandbox/AutoFillPanel'
 
 export default function SandboxBuilderPage() {
   const { id } = useParams<{ id: string }>()
@@ -71,6 +72,13 @@ export default function SandboxBuilderPage() {
           This simulation has been applied to real assignments. It's now read-only.
         </Alert>
       )}
+
+      <AutoFillPanel
+        sandboxId={sandboxId}
+        onGenerated={setLocalPicks}
+        disabled={isApplied}
+      />
+
 
       <SandboxPickerCard
         sandboxId={sandboxId}

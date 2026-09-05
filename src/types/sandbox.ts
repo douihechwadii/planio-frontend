@@ -63,3 +63,12 @@ export interface ApplyResult {
     createdOrUpdatedAssignmentIds: number[]
     success: boolean
 }
+
+export interface AutoFillRequest {
+  months: string[] | null   // null = full project duration
+}
+
+export interface AutoFillResult {
+  sandbox: Sandbox
+  warnings: string[]
+}

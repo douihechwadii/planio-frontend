@@ -104,3 +104,12 @@ export function useApplySandbox(id: number) {
     })
 }
 
+export function useAutoFillSandbox(id: number) {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (months: string[] | null) => sandboxService.autoFill(id, months),
+    onSuccess: (result) => {
+      qc.setQueryData(sandboxKeys.detail(id), result.sandbox)
+    },
+  })
+}
