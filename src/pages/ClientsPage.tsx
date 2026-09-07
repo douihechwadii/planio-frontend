@@ -10,6 +10,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { Can } from '@/components/layout/Can'
 import { ClientForm } from '@/components/clients/ClientForm'
 import { ClientSummary } from '@/types/client'
+import { StatusChip } from '@/components/ui/StatusChip'
 
 export default function ClientsPage() {
   const { data: clients, isLoading } = useClients()
@@ -27,7 +28,7 @@ export default function ClientsPage() {
         title="Clients"
         subtitle={`${clients?.length ?? 0} clients`}
         action={
-          <Can roles={['ADMIN']}>
+          <Can roles={['ADMIN', 'MANAGER']}>
             <Button variant="contained" onClick={() => { setEditing(null); setShowForm(true) }}>
               + Add Client
             </Button>
@@ -57,19 +58,14 @@ export default function ClientsPage() {
                 <TableCell>{c.code}</TableCell>
                 <TableCell>{c.industry ?? '—'}</TableCell>
                 <TableCell>
-                  <Chip
-                    label={c.status}
-                    size="small"
-                    color={c.status === 'ACTIVE' ? 'success' : 'default'}
-                    //variant="outlined"
-                  />
+                  <StatusChip status={c.status}/>
                 </TableCell>
                 <TableCell>{c.totalActiveProjects}</TableCell>
                 <TableCell align="right">
-                  <Can roles={['ADMIN']}>
+                  <Can roles={['ADMIN', 'MANAGER']}>
                     <Button size="small" onClick={() => { setEditing(c); setShowForm(true) }}>Edit</Button>
                   </Can>
-                  <Can roles={['ADMIN']}>
+                  <Can roles={['ADMIN', 'MANAGER']}>
                     <Button
                       size="small"
                       color="error"

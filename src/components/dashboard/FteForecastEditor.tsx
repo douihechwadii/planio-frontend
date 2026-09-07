@@ -11,7 +11,8 @@ function ForecastCell({ month, current, year }: { month: string; current: number
     const [value,   setValue]   = useState(String(current))
     const inputRef              = useRef<HTMLInputElement>(null)
     const setFte                = useSetFteForecast(year)
-    const { isAdmin }           = useRole()
+    const { isAdmin, isManager }           = useRole()
+    const canEdit = isAdmin || isManager
 
     useEffect(() => { setValue(String(current)) }, [current])
     useEffect(() => { if (editing) inputRef.current?.focus() }, [editing])
@@ -41,8 +42,8 @@ function ForecastCell({ month, current, year }: { month: string; current: number
     }
 
     return (
-        <Typography onClick={isAdmin ? () => setEditing(true) : undefined }
-                    sx={{ cursor: isAdmin ? "pointer" : ":default", color: isAdmin ? "primary.main" : "text.primary", textDecoration:isAdmin ? "underline dotted" : "none",
+        <Typography onClick={canEdit ? () => setEditing(true) : undefined }
+                    sx={{ cursor: canEdit ? "pointer" : ":default", color: canEdit ? "primary.main" : "text.primary", textDecoration:isAdmin ? "underline dotted" : "none",
                         fontFamily:"monospace", fontSize:13 }}>
             {current.toFixed(1)}
         </Typography>
@@ -56,7 +57,7 @@ export function FteForecastEditor({ data, year }: { data: MonthlyCapacity[]; yea
         <Paper sx={{ borderRadius: 1, overflow: "hidden" }}>
             <Box sx={{ px:2.5, py:1.5, borderBottom:"1px solid", borderColor:"divider" }}>
                 <Typography variant="h3" sx={{ fontSize:14 }}>FTE Forecast (Headcount)</Typography>
-                <Can roles={['ADMIN']}>
+                <Can roles={['ADMIN', 'MANAGER']}>
                     <Typography variant="caption" color="text.disabled">Click any value to edit the planned headcount for that month.</Typography>
                 </Can>
             </Box>

@@ -22,7 +22,7 @@ export default function ProjectsPage() {
     return (
         <Box>
             <PageHeader title="Projects" subtitle={`${projects?.length ?? 0} projects`}
-                action={<Can roles={['ADMIN']}><Button variant="contained" onClick={() => { setEditing(null); setShowForm(true) }}>+ Add Project</Button></Can>}/>
+                action={<Can roles={['ADMIN', 'MANAGER']}><Button variant="contained" onClick={() => { setEditing(null); setShowForm(true) }}>+ Add Project</Button></Can>}/>
             
             <TableContainer component={Paper} sx={{ borderRadius: 1 }}>
                 <Table size="small">
@@ -48,8 +48,8 @@ export default function ProjectsPage() {
                                 <TableCell>{p.goLiveDate}</TableCell>
                                 <TableCell><StatusChip status={p.status} /></TableCell>
                                 <TableCell align="right">
-                                    <Can roles={['ADMIN']}><Button size="small" onClick={() => { setEditing(p); setShowForm(true) }}>Edit</Button></Can>
-                                    <Can roles={['ADMIN']}><Button size="small" color="error" onClick={() => { if (confirm('Delete this project?')) deleteProject.mutate(p.id) }}>Delete</Button></Can>
+                                    <Can roles={['ADMIN', 'MANAGER']}><Button size="small" onClick={() => { setEditing(p); setShowForm(true) }}>Edit</Button></Can>
+                                    <Can roles={['ADMIN', 'MANAGER']}><Button size="small" color="error" onClick={() => { if (confirm('Delete this project?')) deleteProject.mutate(p.id) }}>Delete</Button></Can>
                                 </TableCell>
                             </TableRow>
                         ))}

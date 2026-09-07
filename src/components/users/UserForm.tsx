@@ -75,7 +75,7 @@ export function UserForm({ user, onSuccess }: UserFormProps) {
             <FormControl fullWidth>
                 <InputLabel>Role</InputLabel>
                 <Select value={form.role} label="Role" onChange={set("role")}>
-                    {(["ADMIN", "USER"] as UserRole[]).map(s => (
+                    {(["ADMIN", "USER", "MANAGER"] as UserRole[]).map(s => (
                         <MenuItem key={s} value={s}>{s}</MenuItem>
                     ))}
                 </Select>

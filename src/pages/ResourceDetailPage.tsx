@@ -24,7 +24,7 @@ export default function ResourceDetailPage() {
     return (
         <Box sx={{ display:"flex", flexDirection:"column", gap:3 }}>
             <PageHeader title={resource.fullName} subtitle={resource.role}
-                        action={<Can roles={['ADMIN']}><Button variant="outlined" onClick={() => setShowEdit(true)}>Edit</Button></Can>} />
+                        action={<Can roles={['ADMIN', 'MANAGER']}><Button variant="outlined" onClick={() => setShowEdit(true)}>Edit</Button></Can>} />
             <Grid container spacing={2}>
                 {[
                     { label:"Email", value: resource.email },

@@ -81,7 +81,7 @@ export default function ProjectDetailPage() {
         title={project.name}
         subtitle={project.client.name}
         action={
-          <Can roles={['ADMIN']}>
+          <Can roles={['ADMIN', 'MANAGER']}>
             <Button variant="outlined" onClick={() => setShowEdit(true)}>
               Edit Project
             </Button>

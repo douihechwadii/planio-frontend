@@ -6,6 +6,7 @@ export function useRole() {
     return {
         isAdmin: role === 'ADMIN',
         isUser: role === 'USER',
+        isManager: role === 'MANAGER',
         can: (roles: string[]) => !!role && roles.includes(role),
     }
 }

@@ -129,7 +129,7 @@ export default function ClientDetailPage() {
         title={client.name}
         subtitle={client.industry ?? undefined}
         action={
-          <Can roles={['ADMIN']}>
+          <Can roles={['ADMIN', 'MANAGER']}>
             <Button variant="outlined" onClick={() => setShowEdit(true)}>
               Edit Client
             </Button>

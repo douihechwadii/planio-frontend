@@ -1,6 +1,6 @@
 import { ClientSummary } from "./client"
 
-export type ProjectStatus = 'PLANNED' | 'ACTIVE' | 'COMPLETED' | 'CANCELLED'
+export type ProjectStatus = 'PLANNED' | 'ACTIVE' | 'COMPLETED' | 'CANCELED'
 
 export interface Project {
   id: number

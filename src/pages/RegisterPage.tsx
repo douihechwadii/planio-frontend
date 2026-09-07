@@ -26,8 +26,8 @@ export default function RegisterPage() {
 
         setLoading(true)
         try {
-            const tokens = await authService.register({ email, password })
-            login(tokens)                     // store the tokens + update role in context
+            const authTokens = await authService.register({ email, password })
+            login(authTokens)                 // store the tokens + update role in context
             navigate('/dashboard', { replace: true })
         } catch (err: any) {
             setError(err?.response?.data?.message ?? "Registration failed")
@@ -42,19 +42,38 @@ export default function RegisterPage() {
             minHeight: "100vh",
             alignItems: "center",
             justifyContent: "center",
-            bgcolor: tokens.colors.brand.lightGray
+            background: `linear-gradient(160deg, ${tokens.colors.brand.lightGray} 0%, #eef1f6 100%)`,
+            p: 2,
         }}>
-            <Card sx={{ width: "100%", maxWidth: 420, borderRadius: 1 }}>
-                <CardContent sx={{ p: 1 }}>
-                    <Box sx={{ px: 0, py: 0, display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Box component="img" src={logo} alt='PLANIO Logo' sx={{ height: 150, width: "auto" }} />
+            <Card sx={{
+                width: "100%",
+                maxWidth: 420,
+                borderRadius: 1,
+                boxShadow: "0 8px 30px rgba(0,0,0,0.08)",
+                border: "1px solid rgba(0,0,0,0.04)",
+            }}>
+                <CardContent sx={{ p: 4 }}>
+                    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mb: 1 }}>
+                        <Box component="img" src={logo} alt='PLANIO Logo' sx={{ height: 100, width: "auto" }} />
                     </Box>
 
-                    <Typography variant="h6" sx={{ textAlign: "center", mb: 2, color: tokens.colors.brand.midnight }}>
-                        Create Admin Account
+                    <Typography
+                        variant="h5"
+                        align="center"
+                        sx={{ fontWeight: 600, mb: 0.5, color: tokens.colors.brand.midnight }}
+                    >
+                        Create admin account
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        align="center"
+                        color="text.secondary"
+                        sx={{ mb: 3 }}
+                    >
+                        Set up the administrator profile to get started
                     </Typography>
 
-                    <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
                         <TextField
                             label="Email"
                             type="email"
@@ -62,6 +81,8 @@ export default function RegisterPage() {
                             onChange={e => setEmail(e.target.value)}
                             required
                             fullWidth
+                            variant="outlined"
+                            sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1 } }}
                         />
                         <TextField
                             label="Password"
@@ -70,6 +91,8 @@ export default function RegisterPage() {
                             onChange={e => setPassword(e.target.value)}
                             required
                             fullWidth
+                            variant="outlined"
+                            sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1 } }}
                         />
                         <TextField
                             label="Confirm Password"
@@ -78,11 +101,28 @@ export default function RegisterPage() {
                             onChange={e => setConfirm(e.target.value)}
                             required
                             fullWidth
+                            variant="outlined"
+                            sx={{ "& .MuiOutlinedInput-root": { borderRadius: 1 } }}
                         />
 
-                        {error && <Alert severity="error">{error}</Alert>}
+                        {error && <Alert severity="error" sx={{ borderRadius: 1 }}>{error}</Alert>}
 
-                        <Button type="submit" variant="contained" fullWidth size="large" disabled={loading}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            fullWidth
+                            size="large"
+                            disabled={loading}
+                            sx={{
+                                borderRadius: 1,
+                                py: 1.3,
+                                fontWeight: 600,
+                                textTransform: "none",
+                                fontSize: "1rem",
+                                boxShadow: "none",
+                                "&:hover": { boxShadow: "0 4px 12px rgba(0,0,0,0.15)" },
+                            }}
+                        >
                             {loading ? "Creating account..." : "Create Account"}
                         </Button>
                     </Box>

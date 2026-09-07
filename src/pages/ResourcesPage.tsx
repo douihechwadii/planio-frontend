@@ -20,7 +20,7 @@ export default function ResourcesPage() {
     return (
         <Box>
             <PageHeader title="Resources" subtitle={`${resources?.length ?? 0} team members`}
-                        action={<Can roles={['ADMIN']}><Button variant="contained" onClick={() => { setEditing(null); setShowForm(true) }}>+ Add Resource</Button></Can>} />
+                        action={<Can roles={['ADMIN', 'MANAGER']}><Button variant="contained" onClick={() => { setEditing(null); setShowForm(true) }}>+ Add Resource</Button></Can>} />
             <TableContainer component={Paper} sx={{ borderRadius: 1 }}>
                 <Table size="small">
                     <TableHead><TableRow>
@@ -39,8 +39,8 @@ export default function ResourcesPage() {
                                 <TableCell sx={{ color:"text.secondary" }}>{r.email}</TableCell>
                                 <TableCell><StatusChip status={r.status} /></TableCell>
                                 <TableCell align="right">
-                                    <Can roles={['ADMIN']}><Button size="small" onClick={() => { setEditing(r); setShowForm(true) }}>Edit</Button></Can>
-                                    <Can roles={['ADMIN']}>
+                                    <Can roles={['ADMIN', 'MANAGER']}><Button size="small" onClick={() => { setEditing(r); setShowForm(true) }}>Edit</Button></Can>
+                                    <Can roles={['ADMIN', 'MANAGER']}>
                                         <Button size="small" color="error"
                                             onClick={() => { if (confirm('Delete this resource?')) deleteResource.mutate(r.id) }}>
                                             Delete

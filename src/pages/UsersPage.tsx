@@ -35,7 +35,7 @@ export default function UsersPage() {
                         {users?.map(u => (
                             <TableRow key={u.id} hover>
                                 <TableCell>
-                                    <Typography component={Link} to={`/admin/users/${u.id}`}
+                                    <Typography
                                                 sx={{ color: "primary.main", fontWeight: 600, textDecoration: "none",
                                                     "&:hover": { textDecoration: "underline" } }}>
                                         {u.id}

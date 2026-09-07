@@ -29,7 +29,7 @@ export default function AssignmentsPage() {
     return (
         <Box>
             <PageHeader title="Assignments" subtitle="Assign resources to projects by month"
-                        action={<Can roles={['ADMIN']}><Button variant="contained" onClick={() => setShowForm(true)}>+ New Assignment</Button></Can>} />
+                        action={<Can roles={['ADMIN', 'MANAGER']}><Button variant="contained" onClick={() => setShowForm(true)}>+ New Assignment</Button></Can>} />
             <Box sx={{ display:"flex", gap:2, mb:2 }}>
                 <FormControl size="small" sx={{ minWidth: 180 }}>
                     <InputLabel>Filter by</InputLabel>
@@ -67,7 +67,7 @@ export default function AssignmentsPage() {
                                     <TableCell >{a.month}</TableCell>
                                     <TableCell sx={{ fontWeight:600, color:"primary.main" }}>{a.daysAssigned}</TableCell>
                                     <TableCell align="right">
-                                        <Can roles={['ADMIN']}>
+                                        <Can roles={['ADMIN', 'MANAGER']}>
                                             <Button size="small" color="error"
                                                 onClick={() => { if (confirm('Remove this assignment?')) deleteAssignment.mutate(a.id) }}>
                                                 Remove
