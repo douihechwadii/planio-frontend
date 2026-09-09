@@ -7,17 +7,17 @@ import { Can } from '@/components/layout/Can'
 import { useRole } from '@/hooks/useRole'
 import { useUpdateMonthlyPlans } from '@/hooks/useProjects'
 
-function PlanCell({ projectId, month, current, assignable }: {
+function PlanCell({ projectId, month, current }: {
     projectId:  number
     month:      string
     current:    number
-    assignable: boolean
 }) {
     const [editing, setEditing] = useState(false)
     const [value,   setValue]   = useState(String(current))
     const inputRef              = useRef<HTMLInputElement>(null)
-    const { isAdmin }           = useRole()
-    const mutation              = useUpdateMonthlyPlans(projectId)  
+    const { isAdmin , isManager}           = useRole()
+    const mutation              = useUpdateMonthlyPlans(projectId)
+    const canEdit = isAdmin || isManager  
 
     useEffect(() => { setValue(String(current)) }, [current])
     useEffect(() => { if (editing) inputRef.current?.focus() }, [editing])
@@ -28,10 +28,6 @@ function PlanCell({ projectId, month, current, assignable }: {
             try { await mutation.mutateAsync([{ month, daysPlanned: days }]) } catch { /* empty */ }
         }
         setEditing(false)
-    }
-
-    if (!assignable) {
-        return <span>—</span>
     }
 
     if (editing) {
@@ -55,11 +51,11 @@ function PlanCell({ projectId, month, current, assignable }: {
 
     return (
         <Typography
-            onClick={isAdmin ? () => setEditing(true) : undefined}
+            onClick={canEdit ? () => setEditing(true) : undefined}
             sx={{
-                cursor:         isAdmin ? "pointer"          : "default",
-                color:          isAdmin ? "primary.main"     : "text.primary",
-                textDecoration: isAdmin ? "underline dotted" : "none",
+                cursor:         canEdit ? "pointer"          : "default",
+                color:          canEdit ? "primary.main"     : "text.primary",
+                textDecoration: canEdit ? "underline dotted" : "none",
                 fontFamily:     "DM Mono, monospace",
                 fontSize:       13,
             }}
@@ -93,16 +89,11 @@ export function MonthlyPlanGrid({ projectId, plans }: { projectId: number; plans
                             DP — Days Planned
                         </TableCell>
                         {plans.map(p => (
-                            <TableCell key={p.month} align="center"
-                                sx={{
-                                    bgcolor: !p.assignable ? tokens.colors.brand.lightGray : undefined,
-                                    color:   !p.assignable ? "text.disabled" : "text.primary",
-                                }}>
+                            <TableCell key={p.month} align="center">
                                 <PlanCell
                                     projectId={projectId}
                                     month={p.month}
                                     current={p.daysPlanned}
-                                    assignable={p.assignable}
                                 />
                             </TableCell>
                         ))}
@@ -115,21 +106,18 @@ export function MonthlyPlanGrid({ projectId, plans }: { projectId: number; plans
                         {plans.map(p => (
                             <TableCell key={p.month} align="center"
                                 sx={{
-                                    bgcolor:    !p.assignable ? tokens.colors.brand.lightGray : undefined,
-                                    color:      !p.assignable ? "text.disabled"
-                                                : p.daysAssigned > 0 ? tokens.colors.brand.red : "text.secondary",
                                     fontWeight: p.daysAssigned > 0 ? 400 : 400,
                                     fontFamily: "DM Mono",
                                     fontSize:   13,
                                 }}>
-                                {!p.assignable ? "not assignable" : p.daysAssigned}
+                                {p.daysAssigned}
                             </TableCell>
                         ))}
                     </TableRow>
                 </TableBody>
             </Table>
 
-            <Can roles={['ADMIN']}>
+            <Can roles={['ADMIN', 'MANAGER']}>
                 <Typography variant="caption" sx={{ display: "block", px: 2, py: 1, color: "text.disabled" }}>
                     Click any DP cell to edit the planned days for that month.
                 </Typography>
